@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: midastoolpy
+Version: 0.0.1
+Summary: Midas Gen Tool - Python library
+Author: albertp16 (Albert Pamonag)
+Author-email: <albertpamonag@gmail.com>
+Keywords: python
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+A package aid structural engineers using Midas Gen
