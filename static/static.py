@@ -133,3 +133,6 @@ def staticSeismic(data):
         E_string += E_title1 + " \r\n " + E_title2 + " \r\n " + E_line1 + " \r\n " + E_line2 + " \r\n " + E_finish + "\r\n";
         i = i + 1
     return E_string
+
+def plotRS(data):
+    return 0
