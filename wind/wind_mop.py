@@ -129,7 +129,7 @@ gust_structure = "structure" ##"wire and bus"
 gust_support_type = "wire-support"
 surface_area = 2.335*.315
 
-test = windForce("B",11,mri,gust_structure,gust_support_type,sa_sa,91.111)
+test = windForce("B",11,mri,gust_structure,gust_support_type,sa_pi,91.111)
 kzt = test.terrainExposureCoefficient()
 ifw = test.importanceFactor()
 grf = test.gustResponseFactor()
