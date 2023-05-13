@@ -122,23 +122,40 @@ class windForce:
         area = self.windSurfaceArea() #m2
         F = q*kz*math.pow(v,2)*ifw*grf*cf*area
         return F
-    
+sa_pi = 2.335*.315 
+sa_sa = 3.071*.250   
 mri = "50 years"
 gust_structure = "structure" ##"wire and bus"
 gust_support_type = "wire-support"
-surface_area = 100
+surface_area = 2.335*.315
 
-test = windForce("B",15,mri,gust_structure,gust_support_type,surface_area,320)
+test = windForce("B",11,mri,gust_structure,gust_support_type,sa_sa,91.111)
 kzt = test.terrainExposureCoefficient()
 ifw = test.importanceFactor()
 grf = test.gustResponseFactor()
-test.windForce()
+F = test.windForce()
 
 '''
 post insulator H : 2335mm x 315mm (circular)
 surge arrester H: 3071mm x 250mm (rectangular)
 '''
 
+
+
 print('kzt = ' + str(kzt))
 print('ifw = ' + str(ifw))
 print('grf = ' + str(grf))
+print('surface area (PI) = ' + str(sa_pi))
+print('surface area (SA) = ' + str(sa_sa))
+print('Wind Force (F) = ' + str(F/1000))
+## apply to midas
+print(3.35/4)
+
+# ##return period 
+# def returnPeriod(pa,n):
+#     pn = 1 - math.pow(1-pa,n)
+#     return pn
+# rp = 1/2475
+# print(rp)
+# check = returnPeriod(rp,50)
+# print(check)
