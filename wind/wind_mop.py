@@ -8,7 +8,29 @@ import math
 from scipy.interpolate import interp1d
 
 class windForce:
-    def __init__(self,exposure,height,mri,gust_structure,gust_support_type,surface_area,wind_speed):
+    
+    """
+    Calculate Wind Force per ASCE MOP 113
+
+    Attributes
+    ----------
+    exposure : str
+        exposure classification ['B'.'C'.'D']
+    height : float
+        ...
+    mri : str
+        ...
+    gust_structure : str
+        ...
+    gust_support_type : str
+        ...
+    surface_area : float
+        project wind surface area normal to the direction of wind (sq.m)
+    wind_speed : float
+        Basic wind speed, 3-s gust wind speed (m/s)
+    """
+    
+    def __init__(self,exposure : str,height : float, mri : str, gust_structure : str ,gust_support_type : str ,surface_area : float ,wind_speed : float) -> float:
         self.exposure = exposure #Exposure 
         self.height = height
         self.mri = mri
@@ -16,12 +38,19 @@ class windForce:
         self.gust_support_type = gust_support_type
         self.surface_area = surface_area #project area
         self.wind_speed = wind_speed
+        
     def airDensity(self):
-        constant = 0.613 
-        return constant
+        '''
+        Air density factor, default value = 0.00256 (0.613 SI) 
+        
+        Returns:
+        airDensity (float): Return constant value of air density 
+        '''
+        AIR_DENSITY = 0.613 
+        return AIR_DENSITY
     def terrainExposureCoefficient(self):
         
-        mult = 0.305 
+        mult = 0.305 #factor convert the imperials into metric
         ht_metric = [] 
         
         tec = [
@@ -36,8 +65,6 @@ class windForce:
             ht_metric.append(convert_ht)
 
         tec.insert(1,ht_metric)
-        # print(tec)
-        ##To select table
         if self.exposure == "B":
             tec_value = tec[2]
         elif self.exposure == "C":
@@ -82,7 +109,7 @@ class windForce:
                 ht_metric.append(convert_ht)
     
             table3d4a.insert(1,ht_metric)
-            # print(table3d4a)
+       
             if self.exposure == "B":
                 table3d4a_value = table3d4a[2]
             elif self.exposure == "C":
@@ -103,7 +130,7 @@ class windForce:
         
         return grf 
     def forceCoefficient(self):
-        ##Table 
+
         table3d9 = {
             "structural shape" : 1.6,
             "bus" : 1.0,
@@ -122,6 +149,7 @@ class windForce:
         area = self.windSurfaceArea() #m2
         F = q*kz*math.pow(v,2)*ifw*grf*cf*area
         return F
+    
 sa_pi = 2.335*.315 
 sa_sa = 3.071*.250   
 mri = "50 years"
