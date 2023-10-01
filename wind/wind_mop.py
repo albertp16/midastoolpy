@@ -94,7 +94,7 @@ class windForce:
         return ifw
     def gustResponseFactor(self):
 
-        if self.gust_structure == "structure" and self.gust_support_type == "wire-support":
+        if self.gust_structure == "structure" or self.gust_support_type == "wire-support":
             table3d4a = [ #Table 3-4a | Structure Response, Gsrf, for Wire-supporting
                 [33,40,50,60,70,80,90,100], #height in imperial units
                 [1.17,1.15,1.12,1.08,1.06,1.03,1.01,1.00], #for exposure B
@@ -136,7 +136,7 @@ class windForce:
             "bus" : 1.0,
             "circular" : 0.90
         }
-        return table3d9["bus"] 
+        return table3d9["structural shape"] 
     def windSurfaceArea(self):
         return self.surface_area
     def windForce(self):
@@ -168,16 +168,85 @@ post insulator H : 2335mm x 315mm (circular)
 surge arrester H: 3071mm x 250mm (rectangular)
 '''
 
+kz = 1.0
+grf = 1.17 ##per Tabe 
+cf = 1.6 
+ifw = 1
+kz = 1.15
+v = 88.33
+
+data = [
+        ["SA",0.7902],
+        ["CVT",1.6605],      
+        ["CT",1.6605],
+        ["CIT",1.7486], 
+        ["DES",3.4948]
+        ]
+sa_area = 0.7902
+cvt_area = 1.6605
+ct_area = 1.6605
+cit_area = 1.7486
+des_area = 3.4948
 
 
-print('kzt = ' + str(kzt))
-print('ifw = ' + str(ifw))
-print('grf = ' + str(grf))
-print('surface area (PI) = ' + str(sa_pi))
-print('surface area (SA) = ' + str(sa_sa))
-print('Wind Force (F) = ' + str(F/1000))
-## apply to midas
-print(3.35/4)
+sah = 3 + 0.2 + 3.4
+cvth = 2.5 + 0.2 + 3.95
+cth = 2.5 + 0.2 + 3.9
+cith = 2.5 + 0.2 + 3.95
+desh = 2.5 + 0.2 + 3
+
+sah2 = 3 + 0.2
+cvth2 = 2.5 + 0.2 
+cth2 = 2.5 + 0.2 
+cith2 = 2.5 + 0.2 
+desh2 = 2.5 + 0.2 
+
+
+saF = windForce("B",sah,mri,gust_structure,gust_support_type,sa_area,v)
+cvtF = windForce("B",cvth,mri,gust_structure,gust_support_type,cvt_area,v)
+ctF = windForce("B",cth,mri,gust_structure,gust_support_type,ct_area,v)
+citF = windForce("B",cith,mri,gust_structure,gust_support_type,cit_area,v)
+desF = windForce("B",desh,mri,gust_structure,gust_support_type,des_area,v)
+
+
+# saF = windForce("B",11,mri,gust_structure,gust_support_type,sa_pi,v)
+# print('kzt = ' + str(kzt))
+# print('ifw = ' + str(ifw))
+# print('grf = ' + str(grf))
+# print('surface area (PI) = ' + str(sa_pi))
+# print('surface area (SA) = ' + str(sa_sa))
+# print('Wind Force (F) = ' + str(F/1000))
+# ## apply to midas
+print("SA " + str(saF.gustResponseFactor() ) + " kN")
+print("CVT " + str(cvtF.gustResponseFactor() ) + " kN")
+print("CT " + str(ctF.gustResponseFactor() ) + " kN")
+print("CIT " + str(citF.gustResponseFactor() ) + " kN")
+print("DEDS " + str(desF.gustResponseFactor() ) + " kN")
+
+
+print("SA " + str(saF.windForce()/1000 ) + " kN")
+print("CVT " + str(cvtF.windForce()/1000 ) + " kN")
+print("CT " + str(ctF.windForce()/1000 ) + " kN")
+print("CIT " + str(citF.windForce()/1000 ) + " kN")
+print("DEDS " + str(desF.windForce()/1000 ) + " kN")
+
+
+m_wind = desh*desF.windForce()/1000 
+m_seis = desh2*5.75
+print("DEDS wind " + str(m_wind/2 ) + " kN")
+print("DEDS seis " + str(m_seis ) + " kN")
+
+# SA wind 29.302578277783226 kN
+# SA seis 3.04 kN
+
+# CVT wind 62.182408421034076 kN
+# CVT seis 15.957 kN
+
+# CT wind 61.57546346527341 kN
+# CT seis 10.368 kN
+
+# CIT wind 65.48157745559782 kN
+# CIT seis 15.525 kN
 
 # ##return period 
 # def returnPeriod(pa,n):

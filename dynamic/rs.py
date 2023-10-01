@@ -4,8 +4,40 @@ Created on Sun Nov 13 22:16:42 2022
 
 @author: alber
 """
+import math
+
+v_srss = 3981 #base shear 
 
 
+def pythagoreanTheorem(a,b):
+    a_init = math.pow(a,2)
+    b_init = math.pow(b,2)
+    c = math.sqrt(a_init + b_init)
+    return c
+
+rmx = 1.0969e+03
+rmy = 3.5722e+03
+rox = 2.9761e+03
+roy = 8.5401e+02
+
+
+scale_factor = 1.00
+
+rm = pythagoreanTheorem(rmx,rmy)
+ro = pythagoreanTheorem(rox,roy)
+
+def scaleFactor(sf,rm,srss):
+    scale = sf*(rm/srss)
+    if(scale < 1): 
+        scale = 1
+    return scale 
+
+
+scale_x = scaleFactor(scale_factor,rm,v_srss) 
+scale_y = scaleFactor(scale_factor,ro,v_srss)
+
+print(f'Scale Shear at X-direction : {scale_x:.2f}.')
+print(f'Scale Shear at Y-direction : {scale_y:.2f}.')
 
 """
 *SGSw

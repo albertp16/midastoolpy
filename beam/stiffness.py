@@ -31,11 +31,12 @@ def typeTwo(rho,beam_w,d_eff,internia_g):
     result = (0.10 + 0.25*rho)*(1.2 - 0.2*(beam_w/d_eff))*internia_g
     minimum = 0.25*internia_g
     maximum = 0.5*internia_g
+    
     if(minimum > result):
         return minimum
     elif(maximum < result):
         return maximum
     else:
-        result
+        return result
 
 
